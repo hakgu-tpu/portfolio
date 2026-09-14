@@ -108,6 +108,12 @@ Supabase가 원본"이라는 원칙과도 맞음 — 배포 파이프라인은 �
 선언적으로 처리하며, `_redirects`와 동시에 존재하면 "infinite loop detected" 빌드 에러가 발생한다.
 → `_redirects` 삭제, 저장소 루트에 `wrangler.jsonc` 커밋으로 대체.
 
+이어서 두 번째 배포도 실패했는데, `assets.directory` 누락 때문이었다. 첫 배포 때는 Cloudflare가
+`wrangler.jsonc`가 없는 상태를 감지해 자동으로 `dist/wrangler.json`을 만들어줬지만, 우리가 직접
+`wrangler.jsonc`를 커밋한 뒤로는 그 파일을 그대로 읽어 배포하므로 빌드 산출물 경로(`dist`)를
+`assets.directory`에 명시해야 했다. `npx wrangler deploy --dry-run` 로 로컬에서 설정 유효성을
+먼저 검증한 뒤 커밋함.
+
 **트레이드오프**: 없음 — 백엔드/서버리스 함수가 필요 없는 순수 정적 사이트이므로 대안(Vercel, GitHub
 Pages 등)과 비교해도 큰 차이는 없음. Cloudflare Pages를 택한 것은 사용자의 선택.
 
