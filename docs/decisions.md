@@ -98,10 +98,15 @@ Supabase가 원본"이라는 원칙과도 맞음 — 배포 파이프라인은 �
 
 **세부 설정**:
 - Build command: `npm run build` / Output directory: `dist`
-- SPA 라우팅(react-router-dom `BrowserRouter`) 대응을 위해 `public/_redirects`에 `/*  /index.html  200` 추가
-  → 빌드 시 `dist/_redirects`로 복사되어 Cloudflare Pages가 모든 경로를 `index.html`로 반환
 - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`는 `.env.local`이 커밋되지 않으므로 Cloudflare Pages
   프로젝트의 환경 변수 설정에 별도로 등록해야 함 (anon key라 노출돼도 안전 — [[architecture]] 참고)
+
+**정정 (2026-09-14)**: 최초에는 SPA 라우팅 대응으로 `public/_redirects`(`/* /index.html 200`)를
+추가했으나, 실제 배포에서 Cloudflare가 이 저장소를 **Workers + Static Assets** 방식으로 배포한다는
+것이 확인됐다 (연결 시 자동 감지된 "Worker Name", 배포 커맨드가 `npx wrangler deploy`인 점 등).
+이 방식은 `wrangler.jsonc`의 `assets.not_found_handling: "single-page-application"` 로 SPA 폴백을
+선언적으로 처리하며, `_redirects`와 동시에 존재하면 "infinite loop detected" 빌드 에러가 발생한다.
+→ `_redirects` 삭제, 저장소 루트에 `wrangler.jsonc` 커밋으로 대체.
 
 **트레이드오프**: 없음 — 백엔드/서버리스 함수가 필요 없는 순수 정적 사이트이므로 대안(Vercel, GitHub
 Pages 등)과 비교해도 큰 차이는 없음. Cloudflare Pages를 택한 것은 사용자의 선택.

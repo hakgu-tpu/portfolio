@@ -118,9 +118,10 @@ VITE_SUPABASE_ANON_KEY=
    VITE_SUPABASE_ANON_KEY
    ```
 4. `main` 브랜치에 push 할 때마다 Cloudflare Pages가 자동으로 빌드·배포
-5. SPA 라우팅 대응: `public/_redirects` 에 `/*  /index.html  200` 을 두어, `/projects/:id` 같은
-   딥링크로 직접 접근하거나 새로고침해도 404 없이 React Router가 처리하도록 함
-   ([[decisions#adr-007]] 참고)
+5. SPA 라우팅 대응: 이 프로젝트에 연결된 Cloudflare Pages는 내부적으로 Workers + Static Assets로
+   배포되며, 저장소 루트의 `wrangler.jsonc` (`assets.not_found_handling: "single-page-application"`)
+   가 `/projects/:id` 같은 딥링크·새로고침을 404 없이 `index.html`로 폴백시켜준다. **`public/_redirects`
+   방식은 이 설정과 충돌(무한 리다이렉트 오류)하므로 쓰지 않는다** ([[decisions#adr-007]] 참고)
 
 ## 콘텐츠 반영 흐름 (예시)
 
