@@ -70,15 +70,19 @@ export default function ProjectDetail() {
   ].filter((s): s is { title: string; body: string } => Boolean(s.body))
 
   return (
-    <main className="mx-auto max-w-[760px] px-8">
-      <nav className="border-border-soft border-b py-7">
-        <Link to="/" className="text-text-dim hover:text-accent inline-flex items-center gap-2 font-mono text-[13px]">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          projects
-        </Link>
+    <div>
+      <nav className="border-border-soft bg-bg/85 sticky top-0 z-20 border-b backdrop-blur">
+        <div className="mx-auto max-w-[760px] px-8 py-7">
+          <Link to="/" className="text-text-dim hover:text-accent inline-flex items-center gap-2 font-mono text-[13px]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            projects
+          </Link>
+        </div>
       </nav>
+
+      <main className="mx-auto max-w-[760px] px-8">
 
       <header className="pt-14 pb-10">
         <div className="text-accent font-mono text-[13px] mb-4.5 flex items-center gap-2.5 tracking-wide">
@@ -211,11 +215,12 @@ export default function ProjectDetail() {
         </p>
       )}
 
-      <footer className="py-12">
-        <p className="text-text-faint font-mono text-xs">
-          © {new Date().getFullYear()} — Supabase 데이터로 구동되는 정적 사이트
-        </p>
-      </footer>
-    </main>
+        <footer className="py-12">
+          <p className="text-text-faint font-mono text-xs">
+            © {new Date().getFullYear()} — Supabase 데이터로 구동되는 정적 사이트
+          </p>
+        </footer>
+      </main>
+    </div>
   )
 }

@@ -79,7 +79,7 @@ export default function Home() {
 
   return (
     <div>
-      <nav className="border-border-soft border-b">
+      <nav className="border-border-soft bg-bg/85 sticky top-0 z-20 border-b backdrop-blur">
         <div className="mx-auto flex max-w-[880px] items-center justify-between px-8 py-7">
           <div className="text-text font-mono text-sm">
             [<span className="text-accent">이상진</span>.dev]
