@@ -82,7 +82,7 @@ export default function Home() {
       <nav className="border-border-soft border-b">
         <div className="mx-auto flex max-w-[880px] items-center justify-between px-8 py-7">
           <div className="text-text font-mono text-sm">
-            [<span className="text-accent">이름</span>.dev]
+            [<span className="text-accent">이상진</span>.dev]
           </div>
           <div className="flex gap-7">
             {['history', 'projects', 'skills', 'awards', 'experiences'].map((id) => (
@@ -102,7 +102,7 @@ export default function Home() {
         <header className="py-24 pb-22">
           <Eyebrow>PORTFOLIO</Eyebrow>
           <h1 className="text-text-faint mb-5 text-[52px] leading-[1.12] font-bold tracking-[-0.02em] text-wrap-pretty">
-            <span className="text-text">[이름]</span>, 백엔드 · 인프라 엔지니어
+            <span className="text-text">이상진</span>, 백엔드 · 인프라 엔지니어
           </h1>
           <p className="text-text-dim mb-7 max-w-[560px] text-[19px] leading-relaxed">
             Spring Boot로 서비스를 만들고 Kubernetes 위에서 운영하는 것까지 책임집니다. 배포
