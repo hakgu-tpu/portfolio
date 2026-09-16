@@ -116,9 +116,13 @@ erDiagram
 `project_skills` 와는 별개로, 자기소개/스킬 섹션에 노출되는 전체 기술 목록. `category` (Language /
 Framework / Database / DevOps / Tools) 와 `level` (main / sub) 로 강조 여부를 표현.
 
-### `experiences` — 활동/학회
-`type` 값: `club`(학회/동아리) · `intern`(인턴) · `activity`(기타 대외활동). `end_date` 가 `null` 이면
-진행 중.
+### `experiences` — 이력/활동
+`type` 값: `education`(학력) · `military`(병역) · `club`(학회/동아리) · `intern`(인턴) · `activity`(기타
+대외활동). `end_date` 가 `null` 이면 진행 중. 사이트 홈의 History 타임라인은 이 테이블과 `awards`,
+`projects` 의 실제 날짜값으로부터 위치를 계산해서 그리며, 타임라인 전용으로 하드코딩된 데이터는
+없다 ([[decisions#adr-008]]). 한 experience 의 날짜 범위가 다른 experience 의 날짜 범위에 완전히
+포함되면(예: 군 복무 기간이 재학 기간에 포함) 프론트엔드에서 이를 "포함된 기간(overlay)"으로 자동
+인식해 겹쳐 그린다 — 별도의 부모-자식 FK 컬럼 없이 날짜만으로 판단한다.
 
 ### `contacts` — 문의 폼 수신함
 사이트 방문자가 남기는 문의를 저장하는 인박스. `is_read` 로 확인 여부 관리. RLS 상 **누구나 insert 가능,
