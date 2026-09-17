@@ -55,8 +55,12 @@ export function buildTracks(experiences: Experience[], scale: TimelineScale, now
     end: e.end_date ? new Date(e.end_date) : now,
   }))
 
+  // 오버레이(같은 트랙 안에 겹쳐 그리기)는 "같은 소속(org_name) 안에서 기간이 완전히
+  // 포함될 때"만 적용한다 — 예: 자람 학회 회원 → 임원진(총무)은 같은 조직 내 역할 변화라
+  // 겹쳐 그리는 게 맞지만, 한양대학교 재학과 군 복무는 날짜상 겹치더라도 서로 다른 소속이라
+  // 항상 별도 트랙으로 분리한다.
   const isContainedBy = (a: (typeof parsed)[number], b: (typeof parsed)[number]) =>
-    a.id !== b.id && a.start >= b.start && a.end <= b.end
+    a.id !== b.id && a.org_name === b.org_name && a.start >= b.start && a.end <= b.end
 
   const bases = parsed.filter((r) => !parsed.some((other) => isContainedBy(r, other)))
 
