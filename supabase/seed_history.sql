@@ -8,5 +8,5 @@
 -- =========================================================
 
 insert into experiences (type, org_name, role, description, start_date, end_date) values
-  ('education', '한양대학교', '컴퓨터공학과 (재학)', null, '2021-03-01', null),
+  ('education', '한양대학교 ERICA', '컴퓨터학부 (재학)', null, '2021-03-01', null),
   ('military',  '대한민국 육군', '병장 만기 전역',    null, '2023-04-10', '2024-10-09');

@@ -227,7 +227,7 @@ insert into awards (title, prize, organizer, awarded_at, project_id) values
   ('한양대 SW/ICT/AI 종합 학술대회',       '우수상',              '한양대학교 ERICA',    '2025-01-01', '46917ef1-e7c3-4fe0-9c1c-6502bca0eca8'); -- 내일의 나
 
 insert into experiences (type, org_name, role, description, start_date, end_date) values
-  ('education', '한양대학교', '컴퓨터공학과 (재학)', null,                        '2021-03-01', null),
+  ('education', '한양대학교 ERICA', '컴퓨터학부 (재학)', null,                     '2021-03-01', null),
   ('military',  '대한민국 육군', '병장 만기 전역',    null,                        '2023-04-10', '2024-10-09'),
-  ('club', '자람 학회', '회원',           '선배 네트워킹 포럼 기획, 학술대회 진행', '2022-03-01', '2026-02-28'),
-  ('club', '자람 학회', '임원진 (총무)',   '학회 운영 총괄 및 예산 관리',           '2025-05-01', '2026-02-28');
+  ('club', '자람 학회', '회원',           null,                                                       '2022-03-01', null),
+  ('club', '자람 학회', '임원진 (총무)',   '학회 운영 총괄 및 예산 관리, 선배 네트워킹 포럼 기획, 학술대회 진행', '2025-05-01', '2026-02-28');
