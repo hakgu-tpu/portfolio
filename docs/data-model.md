@@ -86,22 +86,17 @@ erDiagram
 
 | 컬럼 | 의미 |
 |---|---|
-| `description` | 목록에서 보이는 한줄 설명 (상세 설명은 `project_details` 로 분리) |
+| `slug` | URL(`/projects/<slug>`)과 `content/projects/<slug>.md` 파일명에 쓰이는 식별자 |
+| `description` | 목록에서 보이는 한줄 설명 (상세 본문은 `content/projects/<slug>.md` — [[decisions#adr-010]]) |
 | `end_date` | `null` = 진행 중인 프로젝트 |
 | `is_featured` | 메인 화면 노출 여부 |
 | `order_index` | 노출 순서 수동 제어 |
 
-### `project_details` — 프로젝트 상세 (1:1)
-프로젝트 상세 페이지 전용 데이터. `projects` 에 인라인 컬럼으로 넣지 않고 **별도 테이블로 분리**한 이유는
-[[decisions#adr-003]] 참고. `project_id` 에 `unique` 제약이 걸려 있어 프로젝트당 상세 레코드는 정확히 0 또는 1개.
-
-| 컬럼 | 의미 |
-|---|---|
-| `background` | 기획 배경 / 프로젝트를 시작한 동기 |
-| `tech_detail` | 기술적 구현 상세 |
-| `challenges` | 어려웠던 점 & 해결 방법 |
-| `learned` | 배운 점 |
-| `architecture` | 아키텍처 설명(텍스트) 또는 이미지 URL |
+### `project_details` — ⚠️ deprecated, 사용 안 함
+프로젝트 상세 본문을 담던 테이블. 2026-09 부터 `content/projects/<slug>.md` 로 이전했고
+([[decisions#adr-010]]), 사이트는 더 이상 이 테이블을 조회하지 않는다. 왜 애초에 별도 테이블로
+분리했었는지는 [[decisions#adr-003]] 참고 (그 결정 자체는 "인라인 컬럼 vs JSONB vs 별도 테이블"
+논쟁이었고, "DB vs 파일"과는 다른 논의). 당장 drop 하지는 않은 상태.
 
 ### `project_skills` — 프로젝트별 기술 스택 (1:N)
 프로젝트 하나에 여러 기술 스택을 매핑. `is_my_part` 로 "팀 프로젝트에서 본인이 직접 담당한 기술"과

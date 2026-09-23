@@ -150,6 +150,31 @@ Pages 등)과 비교해도 큰 차이는 없음. Cloudflare Pages를 택한 것�
 **트레이드오프**: 없음 — 판별 조건에 `org_name` 비교 한 줄만 추가하면 되고, 데이터 모델이나 스키마
 변경은 필요 없음 ([[data-model]] "트랙 분리 원칙" 참고).
 
+## ADR-010: 프로젝트 상세 본문은 Supabase 대신 저장소 markdown 파일로 관리
+
+**결정**: 프로젝트 상세 페이지의 장문 본문(기획배경/기술상세/어려웠던점/배운점/아키텍처)을
+Supabase `project_details` 테이블이 아니라 이 저장소의 `content/projects/<slug>.md` 파일로
+관리한다. `projects` 테이블에 `slug` 컬럼을 추가해 URL(`/projects/<slug>`)과 파일명이 이 값으로
+매칭되도록 하고, 기존 uuid 기반 라우팅(`/projects/:id`)은 제거한다. `project_details` 테이블은
+당장 drop 하지 않지만 사이트에서는 더 이상 조회하지 않는다(deprecated).
+
+**이유**: Supabase Table Editor의 text 입력창은 여러 문단의 장문을 다듬어 쓰기에 불편하고(마크다운
+문법도 지원 안 함), 변경 이력도 안 남는다. 반면 git 저장소의 `.md` 파일은 에디터에서 편하게 쓸 수
+있고, 커밋 이력으로 내용 변경을 추적할 수 있으며, 리스트·코드블록 같은 마크다운 서식을 그대로 쓸 수
+있다. [[architecture]]의 "정형 데이터는 Supabase, 장문 콘텐츠는 git" 원칙에 따라 역할을 분리했다.
+수상(awards) 상세는 아직 UI 자체가 없어 이번에는 프로젝트만 전환하고, 필요해지면 같은
+`content/awards/<slug>.md` 패턴으로 동일하게 확장할 수 있다.
+
+**세부 구현**: `##` 헤딩으로 섹션을 구분하고, 화면에는 CSS `counter()`로 섹션 번호를 자동으로 매긴다
+(React 쪽에서 섹션을 배열로 손수 관리할 필요 없음 — 마크다운에 헤딩을 추가/삭제하기만 하면 됨).
+렌더링은 `react-markdown` + `remark-gfm`, 파일은 Vite의 `import.meta.glob(..., {eager:true,
+query:'?raw'})` 로 빌드 타임에 번들링한다 (런타임 fetch 아님 — 정적 사이트 원칙 유지).
+`ProjectDetail` 페이지는 번들 크기 때문에 `React.lazy` 로 코드 스플릿함.
+
+**트레이드오프**: 프로젝트 상세 본문을 고치려면 (Supabase 대시보드가 아니라) git commit + push +
+Cloudflare 재배포가 필요해짐 — 정형 데이터보다 반영이 느려짐. 하지만 이 콘텐츠는 자주 바뀌는 데이터가
+아니라서 감수할 만한 트레이드오프로 판단함.
+
 <!-- 다음 결정을 추가할 때는 아래 템플릿을 복사해서 사용하세요.
 
 ## ADR-00N: <결정 제목>

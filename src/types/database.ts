@@ -3,6 +3,7 @@
 
 export interface Project {
   id: string
+  slug: string
   name: string
   description: string | null
   role: string | null
@@ -16,6 +17,8 @@ export interface Project {
   created_at: string
 }
 
+// ⚠️ DEPRECATED (ADR-010): 더 이상 사이트에서 조회하지 않음 — 상세 본문은
+// content/projects/<slug>.md 로 관리한다. 테이블/타입은 당장 지우지 않고 남겨둠.
 export interface ProjectDetail {
   id: string
   project_id: string
@@ -56,7 +59,7 @@ export interface Skill {
   order_index: number
 }
 
-export type ExperienceType = 'club' | 'intern' | 'activity'
+export type ExperienceType = 'education' | 'military' | 'club' | 'intern' | 'activity'
 
 export interface Experience {
   id: string

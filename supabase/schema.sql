@@ -10,6 +10,7 @@
 -- ① 프로젝트 — 목록/카드에 노출되는 기본 정보
 create table projects (
   id          uuid primary key default gen_random_uuid(),
+  slug        text not null unique,          -- URL/콘텐츠 파일명 (예: 'dartoo') — content/projects/<slug>.md 와 매칭
   name        text not null,
   description text,                         -- 한줄 설명 (목록에서 보이는)
   role        text,                         -- 본인 역할 요약
@@ -24,6 +25,9 @@ create table projects (
 );
 
 -- ② 프로젝트 세부 내용 (projects 와 1:1)
+-- ⚠️ DEPRECATED (ADR-010): 프로젝트 상세 본문은 더 이상 이 테이블이 아니라
+--    저장소의 content/projects/<slug>.md 로 관리한다. 사이트는 이 테이블을 더 이상
+--    조회하지 않는다. 당장 drop 하지는 않고 남겨둔 상태 — 완전히 필요 없어지면 제거.
 create table project_details (
   id           uuid primary key default gen_random_uuid(),
   project_id   uuid references projects(id) on delete cascade unique,
@@ -142,20 +146,20 @@ grant select on contacts to authenticated;
 -- =========================================================
 
 -- 대상 프로젝트 3건: Fithub / Dartoo / 내일의 나
-insert into projects (id, name, description, role, team_size, start_date, end_date, service_url, github_url, is_featured, order_index) values
-  ('c0d49ff7-c557-4e96-8d5a-d4829dd67647', 'Fithub',
+insert into projects (id, slug, name, description, role, team_size, start_date, end_date, service_url, github_url, is_featured, order_index) values
+  ('c0d49ff7-c557-4e96-8d5a-d4829dd67647', 'fithub', 'Fithub',
    '식단·운동 루틴을 생성하고 관리·공유하는 서비스',
    'PM 및 인프라 환경 구축 (K8s, Envoy Gateway, GitHub Actions CI)',
    4, '2025-12-01', '2026-04-01',
    'https://fithub.life', 'https://github.com/JAC-FitHub', true, 1),
 
-  ('379d437a-f76b-42a3-a4c9-5fd840125585', 'Dartoo',
+  ('379d437a-f76b-42a3-a4c9-5fd840125585', 'dartoo', 'Dartoo',
    '실시간 공시정보 요약 서비스',
    '백엔드 개발(Spring Boot) 및 인프라·운영 환경 구축 (K8s, Envoy Gateway, GitHub Actions CI), 통합 테스트 환경 구축',
    6, '2025-07-01', '2026-09-01',
    'https://dartoo.co.kr', 'https://github.com/team-dartoo', true, 2),
 
-  ('46917ef1-e7c3-4fe0-9c1c-6502bca0eca8', '내일의 나',
+  ('46917ef1-e7c3-4fe0-9c1c-6502bca0eca8', 'tomorrow', '내일의 나',
    '고등학생을 대상으로 AI 기반 진로 상담과 진로 로드맵을 제공하는 서비스',
    '백엔드 개발(Spring Boot) 및 Kubernetes 기반 인프라 환경 구축',
    4, '2025-07-01', '2026-04-01',

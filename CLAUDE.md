@@ -17,6 +17,7 @@
 | [`docs/decisions.md`](docs/decisions.md) | 왜 이렇게 설계했는지에 대한 결정 기록 (ADR) |
 | [`docs/content-operations.md`](docs/content-operations.md) | Supabase 대시보드에서 콘텐츠를 추가/수정하는 절차 |
 | [`supabase/schema.sql`](supabase/schema.sql) | **스키마의 원본(source of truth)** — 실행 가능한 SQL |
+| [`content/projects/`](content/projects) | 프로젝트 상세 본문 원본(markdown) — Supabase가 아님 ([[decisions#adr-010]]) |
 
 ## 핵심 원칙
 
@@ -32,15 +33,20 @@
 5. **확정과 제안을 구분한다.** `docs/architecture.md`의 기술 스택 표에는 "확정"과 "제안만 됨" 상태가
    표시돼 있다. 제안 단계 항목(예: 프론트엔드 프레임워크)을 이미 정해진 것처럼 다루지 말고, 실제
    작업 전에 사용자에게 확인한다.
+6. **콘텐츠 소스는 두 곳이다.** 정형 데이터(프로젝트 요약/스킬/수상/경력)는 Supabase, 장문
+   콘텐츠(프로젝트 상세 본문)는 `content/` 아래 markdown 파일이 원본이다 ([[decisions#adr-010]]).
+   새 콘텐츠 요구사항이 생기면 "이게 정형 데이터인가, 장문 콘텐츠인가"부터 판단한다.
 
-## 현재 상태 (2026-09-14 기준)
+## 현재 상태 (2026-09-22 기준)
 
 - ✅ 포트폴리오 형식: 웹사이트(HTML) 확정
 - ✅ 대상 프로젝트 3건 확정: Fithub, Dartoo, 내일의 나
 - ✅ DB 스키마 v1 확정 (7개 테이블 + RLS) — `supabase/schema.sql` 참고
-- ✅ 프론트엔드 스택 확정 및 스캐폴딩 완료: React 19 + Vite + TypeScript + Tailwind CSS v4 +
-  react-router-dom + `@supabase/supabase-js` — `docs/architecture.md` 참고
-- ✅ 실제 Supabase 프로젝트 생성 완료, `schema.sql` 실행 및 GRANT/RLS 반영 확인, `.env.local` 연동 확인
-- ✅ Fithub / Dartoo / 내일의 나 3개 프로젝트 실데이터 입력 완료 (`supabase/seed_projects.sql`), 수상 내역
-  중 2건(한양대 최우수상 → Dartoo, 우수상 → 내일의 나) 연결 완료. 목록/상세 페이지 브라우저 확인 완료
-- ⏳ 미확정: 배포 방식, 이미지 스토리지(Supabase Storage 예정 — 프로젝트 썸네일/아키텍처 다이어그램에 필요)
+- ✅ 프론트엔드 스택: React 19 + Vite + TypeScript + Tailwind CSS v4 + react-router-dom +
+  `@supabase/supabase-js` + `react-markdown`/`remark-gfm` — `docs/architecture.md` 참고
+- ✅ 실제 Supabase 프로젝트 생성 및 배포(GitHub → Cloudflare Pages) 완료, 실데이터 입력 완료
+- ✅ 다크 테마 리디자인 + History 타임라인(날짜 기반 자동 계산, ADR-008/009) + 모바일 반응형 적용
+- ✅ 프로젝트 상세 본문을 Supabase에서 `content/projects/<slug>.md` 로 이전 (ADR-010) —
+  라우팅도 uuid 대신 `slug` 기반으로 변경, `project_details` 테이블은 deprecated
+- ⏳ 미확정: 이미지 스토리지(Supabase Storage 예정 — 프로젝트 썸네일/아키텍처 다이어그램에 필요),
+  수상(awards) 상세 페이지(필요해지면 같은 markdown 패턴으로 확장)

@@ -19,7 +19,7 @@ export default function ProjectCard({
 
   return (
     <Link
-      to={`/projects/${project.id}`}
+      to={`/projects/${project.slug}`}
       className="border-border hover:border-accent bg-bg-raised flex flex-col gap-4 rounded-lg border p-6 transition"
     >
       <div className="flex flex-col gap-2">

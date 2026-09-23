@@ -41,7 +41,8 @@ export default function HistoryTimeline({
   const nowLeft = scale.pct(now)
 
   return (
-    <div>
+    <div className="-mx-5 overflow-x-auto px-5 sm:mx-0 sm:overflow-visible sm:px-0">
+      <div className="min-w-[640px]">
       <div className="relative">
         <div className="absolute inset-0">
           {milestones.map((m, i) => (
@@ -125,6 +126,7 @@ export default function HistoryTimeline({
             {y.label}
           </span>
         ))}
+      </div>
       </div>
     </div>
   )

@@ -7,21 +7,28 @@ status: 초안
 
 관련 문서: [[data-model]] · [[architecture]] · [[decisions]]
 
-이 사이트는 코드 배포 없이 **Supabase 대시보드 → Table Editor** 에서 데이터를 수정하는 것만으로
-콘텐츠가 갱신됩니다 (이유: [[decisions#adr-001]]). 아래는 자주 발생하는 작업의 절차입니다.
+정형 데이터(프로젝트 요약, 기술 스택, 수상, 경력)는 코드 배포 없이 **Supabase 대시보드 →
+Table Editor** 에서 수정하는 것만으로 콘텐츠가 갱신됩니다 (이유: [[decisions#adr-001]]). 단,
+프로젝트 상세 본문은 2026-09 부터 이 저장소의 markdown 파일로 관리하며, 이건 git push 후
+배포가 끝나야 반영됩니다 ([[decisions#adr-010]]). 아래는 자주 발생하는 작업의 절차입니다.
 
 ## 새 프로젝트 추가하기
 
 1. `projects` 테이블 → **Insert row**
-   - `name`, `description`(목록용 한줄 설명), `role`, `team_size`, `start_date`/`end_date`,
+   - `slug`(영문 소문자, URL과 파일명에 쓰임 — 예: `dartoo`), `name`,
+     `description`(목록용 한줄 설명), `role`, `team_size`, `start_date`/`end_date`,
      `service_url`, `github_url`, `is_featured`, `order_index` 입력
-   - 생성된 `id`(uuid)를 복사해둔다
-2. `project_details` 테이블 → **Insert row**
-   - `project_id` 에 위에서 복사한 uuid 입력
-   - `background`, `tech_detail`, `challenges`, `learned`, `architecture` 작성
+   - 생성된 `id`(uuid)를 복사해둔다 (`project_skills`/`awards` 연결에 필요)
+2. 저장소에 `content/projects/<slug>.md` 파일 추가 — `##` 로 섹션을 나눠서 작성
+   (예: `## 기획 배경`, `## 기술적 구현 상세`, …). 섹션 번호는 화면에서 자동으로 매겨지므로
+   신경 쓸 필요 없음. 원하는 만큼 섹션을 추가/삭제해도 된다.
 3. `project_skills` 테이블 → 사용 기술 개수만큼 **Insert row** (각 row마다 `project_id`, `skill_name`,
    `is_my_part`)
-4. 사이트 새로고침 → 반영 확인
+4. git commit + push → Cloudflare 재배포 후 반영 확인 (Supabase 데이터만 바뀐 경우는 새로고침으로
+   바로 확인 가능하지만, markdown 본문은 배포가 끝나야 보임)
+
+> `project_details` 테이블은 더 이상 사이트가 읽지 않는 deprecated 테이블입니다 — 새 프로젝트를
+> 추가할 때 여기에 데이터를 넣지 마세요.
 
 ## 수상 내역 추가하기
 
@@ -34,18 +41,17 @@ status: 초안
 - 소개 섹션에 노출되는 전체 스킬: `skills` 테이블 직접 수정 (`category`/`level`/`order_index` 로 정렬·강조 제어)
 - 특정 프로젝트에서 사용한 기술: 해당 프로젝트의 `project_skills` row 추가/삭제
 
-## 활동/학회 이력 갱신하기
+## 활동/학회/학력/병역 이력 갱신하기 (History 타임라인)
 
-- `experiences` 테이블에서 직접 관리. 진행 중인 활동은 `end_date` 를 비워둔다.
+- `experiences` 테이블에서 직접 관리. `type` 값: `education`·`military`·`club`·`intern`·`activity`.
+  진행 중인 활동은 `end_date` 를 비워둔다.
+- 홈의 History 타임라인은 이 테이블(과 `awards`/`projects`)의 날짜값으로 좌표를 자동 계산해서
+  그린다 — 좌표를 직접 관리할 필요 없음.
+- **같은 `org_name`** 안에서 한 row의 기간이 다른 row의 기간에 완전히 포함되면 같은 트랙에
+  겹쳐 그려진다(예: 자람 학회 "회원" 기간 안의 "임원진(총무)" 기간). `org_name` 이 다르면 날짜가
+  겹쳐도 항상 별도 트랙으로 분리된다 ([[decisions#adr-009]]).
 
 ## 문의(contact) 확인하기
 
 - `contacts` 테이블에서 조회 (본인만 읽기 가능 — RLS)
 - 확인한 문의는 `is_read` 를 `true` 로 변경
-
-## 아직 정리되지 않은 시드 데이터
-
-`supabase/schema.sql` 하단의 seed 섹션에는 `skills`/`awards`/`experiences` 시드만 있고, 실제
-포트폴리오 대상 프로젝트(Fithub, Dartoo, 내일의 나)의 `projects`/`project_details`/`project_skills`
-데이터는 아직 없습니다. 위 "새 프로젝트 추가하기" 절차를 따라 3개 프로젝트를 먼저 채워 넣고,
-기존 `awards` 시드 row 들의 `project_id` 를 실제 값으로 업데이트하세요.

@@ -82,12 +82,18 @@ status: 확정 (프론트엔드 스택 포함)
 ```
 src/
   main.tsx             # 엔트리, BrowserRouter 세팅
-  App.tsx              # 라우트 정의 (/, /projects/:id)
+  App.tsx              # 라우트 정의 (/, /projects/:slug) — ProjectDetail은 lazy 로드
   lib/supabase.ts       # Supabase 클라이언트 (anon key)
+  lib/content.ts         # content/projects/*.md 를 빌드 타임에 읽어오는 로더 (ADR-010)
+  lib/timeline.ts        # History 타임라인 좌표 계산 (ADR-008/009)
   types/database.ts     # schema.sql 과 1:1 대응하는 타입 — 스키마 변경 시 함께 갱신
-  pages/Home.tsx        # 프로젝트 목록 + skills/awards/experiences 섹션
-  pages/ProjectDetail.tsx  # 프로젝트 상세 (project_details, project_skills join)
+  pages/Home.tsx        # 프로젝트 목록 + history/skills/awards/experiences 섹션
+  pages/ProjectDetail.tsx  # 프로젝트 상세 — 메타(Supabase) + 본문(markdown) 조합
   components/ProjectCard.tsx
+  components/HistoryTimeline.tsx
+
+content/
+  projects/<slug>.md    # 프로젝트 상세 본문 — Supabase가 아니라 이 저장소가 원본 (ADR-010)
 ```
 
 `src/types/database.ts` 는 [[data-model]] / `supabase/schema.sql` 과 동기화되어야 하는 파일입니다.
@@ -123,11 +129,26 @@ VITE_SUPABASE_ANON_KEY=
    가 `/projects/:id` 같은 딥링크·새로고침을 404 없이 `index.html`로 폴백시켜준다. **`public/_redirects`
    방식은 이 설정과 충돌(무한 리다이렉트 오류)하므로 쓰지 않는다** ([[decisions#adr-007]] 참고)
 
+## 콘텐츠 소스 — Supabase(구조화 데이터) + Git(장문 본문)
+
+2026-09 부터 콘텐츠 관리가 두 곳으로 나뉜다 ([[decisions#adr-010]]):
+
+| 데이터 | 원본 | 이유 |
+|---|---|---|
+| 프로젝트 요약(이름/설명/역할/기간/링크), 기술 스택, 수상, 경력, 스킬 | **Supabase** | 정형 데이터, Table Editor로 빠르게 추가/수정 |
+| 프로젝트 상세 본문(기획배경/기술상세/…) | **`content/projects/<slug>.md`** (이 저장소) | 긴 글은 마크다운 에디터로 쓰는 게 훨씬 편하고, git으로 버전 관리됨 |
+
+`project_details` 테이블은 더 이상 사이트가 읽지 않는다 — 당장 drop 하지는 않았지만 사실상
+사용하지 않는 상태 (deprecated). 프로젝트를 식별하는 키도 uuid 대신 `projects.slug` 를 쓴다
+(`/projects/<slug>` 라우팅과 `content/projects/<slug>.md` 파일명이 이 값으로 매칭됨).
+
 ## 콘텐츠 반영 흐름 (예시)
 
-1. 새 프로젝트가 생겼을 때 → Supabase 대시보드 → `projects` 테이블 → Insert row
-2. 상세 설명 작성 → `project_details` 에 연결된 row insert (FK: `project_id`)
+1. 새 프로젝트가 생겼을 때 → Supabase 대시보드 → `projects` 테이블 → Insert row (`slug` 필수, 예: `dartoo`)
+2. 상세 본문 작성 → 저장소에 `content/projects/<slug>.md` 파일 추가 (마크다운 `##` 로 섹션 구분,
+   섹션 번호는 CSS로 자동 매김) → git commit/push → Cloudflare가 재배포
 3. 사용 기술 등록 → `project_skills` 에 row 여러 개 insert
-4. 포트폴리오 사이트 새로고침 → 바로 반영 (배포 불필요)
+4. Supabase 데이터(1, 3)는 새로고침하면 바로 반영되지만, markdown 본문(2)은 git push 후
+   Cloudflare 재배포가 끝나야 반영된다 — 콘텐츠 종류에 따라 반영 속도가 다르다는 점 유의
 
 자세한 절차는 [[content-operations]] 참고.
