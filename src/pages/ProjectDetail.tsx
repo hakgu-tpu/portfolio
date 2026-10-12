@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown'
 import { Link, useParams } from 'react-router-dom'
 import remarkGfm from 'remark-gfm'
 import { getProjectMarkdown } from '../lib/content'
-import { supabase } from '../lib/supabase'
+import { getProjectData } from '../lib/data'
 import type { Award, Project, ProjectSkill } from '../types/database'
 
 function formatDate(d: string) {
@@ -20,25 +20,23 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     if (!slug) return
+    const projectSlug = slug
 
     async function load() {
-      const projectRes = await supabase.from('projects').select('*').eq('slug', slug).single()
-
-      if (projectRes.error || !projectRes.data) {
-        setError(projectRes.error?.message ?? '프로젝트를 찾을 수 없습니다.')
-        setLoading(false)
-        return
-      }
-
-      const [skillsRes, awardRes] = await Promise.all([
-        supabase.from('project_skills').select('*').eq('project_id', projectRes.data.id),
-        supabase.from('awards').select('*').eq('project_id', projectRes.data.id).maybeSingle(),
-      ])
-
-      setProject(projectRes.data)
-      setSkills(skillsRes.data ?? [])
-      setAward(awardRes.data ?? null)
-      setLoading(false)
+      try {
+         const data = await getProjectData(projectSlug)
+         if (!data) {
+           setError('프로젝트를 찾을 수 없습니다.')
+           return
+         }
+         setProject(data.project)
+         setSkills(data.skills)
+         setAward(data.award)
+       } catch (caughtError) {
+         setError(caughtError instanceof Error ? caughtError.message : '알 수 없는 오류가 발생했습니다.')
+       } finally {
+         setLoading(false)
+       }
     }
 
     load()
@@ -205,7 +203,7 @@ export default function ProjectDetail() {
 
         <footer className="py-12">
           <p className="text-text-faint font-mono text-xs">
-            © {new Date().getFullYear()} — Supabase 데이터로 구동되는 정적 사이트
+            © {new Date().getFullYear()} — Firestore 데이터로 구동되는 정적 사이트
           </p>
         </footer>
       </main>

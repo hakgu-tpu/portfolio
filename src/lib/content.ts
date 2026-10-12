@@ -1,4 +1,4 @@
-// 프로젝트 상세 본문은 Supabase가 아니라 저장소의 content/projects/<slug>.md 로 관리한다.
+// 프로젝트 상세 본문은 Firestore가 아니라 저장소의 content/projects/<slug>.md 로 관리한다.
 // (docs/decisions.md ADR-010 참고) — 빌드 타임에 정적으로 번들링된다.
 
 const projectMarkdownFiles = import.meta.glob('/content/projects/*.md', {

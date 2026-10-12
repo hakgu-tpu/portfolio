@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import HistoryTimeline from '../components/HistoryTimeline'
 import ProjectCard from '../components/ProjectCard'
-import { supabase } from '../lib/supabase'
+import { getHomeData } from '../lib/data'
 import type { Award, Experience, Project, ProjectSkill, Skill } from '../types/database'
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -24,35 +24,18 @@ export default function Home() {
 
   useEffect(() => {
     async function load() {
-      const [projectsRes, projectSkillsRes, skillsRes, awardsRes, experiencesRes] =
-        await Promise.all([
-          supabase
-            .from('projects')
-            .select('*')
-            .eq('is_featured', true)
-            .order('order_index', { ascending: true }),
-          supabase.from('project_skills').select('*'),
-          supabase.from('skills').select('*').order('order_index', { ascending: true }),
-          supabase.from('awards').select('*').order('awarded_at', { ascending: false }),
-          supabase.from('experiences').select('*').order('start_date', { ascending: true }),
-        ])
-
-      const firstError =
-        projectsRes.error ??
-        projectSkillsRes.error ??
-        skillsRes.error ??
-        awardsRes.error ??
-        experiencesRes.error
-      if (firstError) {
-        setError(firstError.message)
-      } else {
-        setProjects(projectsRes.data ?? [])
-        setProjectSkills(projectSkillsRes.data ?? [])
-        setSkills(skillsRes.data ?? [])
-        setAwards(awardsRes.data ?? [])
-        setExperiences(experiencesRes.data ?? [])
-      }
-      setLoading(false)
+       try {
+         const data = await getHomeData()
+         setProjects(data.projects)
+         setProjectSkills(data.projectSkills)
+         setSkills(data.skills)
+         setAwards(data.awards)
+         setExperiences(data.experiences)
+       } catch (caughtError) {
+         setError(caughtError instanceof Error ? caughtError.message : '알 수 없는 오류가 발생했습니다.')
+       } finally {
+         setLoading(false)
+       }
     }
 
     load()
@@ -235,7 +218,7 @@ export default function Home() {
 
         <footer className="py-15 pb-10">
           <p className="text-text-faint font-mono text-xs">
-            © {new Date().getFullYear()} — Supabase 데이터로 구동되는 정적 사이트
+            © {new Date().getFullYear()} — Firestore 데이터로 구동되는 정적 사이트
           </p>
         </footer>
       </main>

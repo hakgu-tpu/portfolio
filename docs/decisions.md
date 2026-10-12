@@ -175,6 +175,30 @@ query:'?raw'})` 로 빌드 타임에 번들링한다 (런타임 fetch 아님 —
 Cloudflare 재배포가 필요해짐 — 정형 데이터보다 반영이 느려짐. 하지만 이 콘텐츠는 자주 바뀌는 데이터가
 아니라서 감수할 만한 트레이드오프로 판단함.
 
+## ADR-011: Supabase에서 Firebase Cloud Firestore로 정형 데이터 저장소 전환
+
+**결정**: Supabase의 저사용에 따른 리소스 이용 제한을 확인해, 프로젝트·기술·수상·이력의 정형 데이터
+저장소를 Firebase Cloud Firestore로 전환한다. 프론트엔드는 Firebase Web SDK로 Firestore를 읽고,
+콘텐츠 관리는 Firebase Console에서 수행한다. 정적 사이트 배포는 기존 GitHub → Cloudflare Pages 구성을
+유지한다.
+
+**이유**: 현재 Supabase 환경에서는 사용량 부족으로 필요한 리소스를 안정적으로 이용할 수 없다. Firebase
+Console과 Firestore를 사용하면 별도 관리 화면 없이 현재의 읽기 전용 사이트 구조를 유지하면서 데이터
+운영 기반을 교체할 수 있다.
+
+**보안**: `firebase/firestore.rules`에서 공개 포트폴리오 컬렉션의 읽기만 허용하고 브라우저 쓰기는
+차단한다. 관리자 변경은 Firebase Console의 관리자 권한으로 수행한다. 문의 폼은 아직 없으므로
+`contacts` 컬렉션의 접근을 모두 차단한다.
+
+**이관 범위**: `projects`, `project_skills`, `skills`, `awards`, `experiences`를 Firestore 최상위
+컬렉션으로 옮긴다. 기존 UUID는 Firestore 문서 ID로 유지해 관계 필드(`project_id`)를 바꾸지 않는다.
+`project_details`는 ADR-010에 따라 이관하지 않고, 장문 콘텐츠는 계속 `content/projects/<slug>.md`에서
+관리한다. 자세한 순서는 [[firebase-migration]]을 참고한다.
+
+**트레이드오프**: SQL의 FK·조인 제약은 Firestore에서 제공되지 않으므로, `project_id` 참조 무결성은
+콘텐츠 입력 시 운영자가 관리해야 한다. 또한 Firebase 프로젝트 생성, Rules 배포, 데이터 이관 및
+Cloudflare 환경변수 등록이 완료되기 전까지 실제 운영 전환은 완료되지 않는다.
+
 <!-- 다음 결정을 추가할 때는 아래 템플릿을 복사해서 사용하세요.
 
 ## ADR-00N: <결정 제목>

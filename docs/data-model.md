@@ -1,33 +1,31 @@
 ---
 title: 데이터 모델
-status: 확정 (v1) — projects/project_details 시드 데이터 작성 전
-source_of_truth: ../supabase/schema.sql
+status: Firestore 전환 중
+source_of_truth: ../firebase/firestore-data.json, ../firebase/firestore.rules
 ---
 
 # 데이터 모델
 
-> 이 문서는 [`supabase/schema.sql`](../supabase/schema.sql) 을 사람이 읽기 좋게 풀어쓴 설명입니다.
-> **스키마의 원본(source of truth)은 항상 `schema.sql`** 이며, 둘이 어긋나면 `schema.sql` 이 맞습니다.
-> 둘 다 반드시 같이 갱신하세요.
+> 이 문서는 Firestore 컬렉션 구조를 사람이 읽기 좋게 풀어쓴 설명입니다. 초기 구조와 이관 데이터는
+> [`firebase/firestore-data.json`](../firebase/firestore-data.json), 공개 접근 정책은
+> [`firebase/firestore.rules`](../firebase/firestore.rules)가 원본입니다.
 
 ## 설계 철학: Data-Driven Design (DDD)
 
 이 프로젝트는 화면(컴포넌트/페이지)을 먼저 만들고 데이터를 끼워맞추는 방식이 아니라,
-**Supabase의 테이블 구조를 먼저 확정하고, 사이트의 모든 화면·콘텐츠가 그 데이터를 그대로 반영**하는
+**Firestore의 컬렉션/문서 구조를 먼저 확정하고, 사이트의 모든 화면·콘텐츠가 그 데이터를 그대로 반영**하는
 방식으로 설계됩니다.
 
-- 새 콘텐츠 요구사항이 생기면 → 먼저 테이블/컬럼을 어떻게 바꿀지 결정 → `schema.sql` 갱신 → 화면 반영
+- 새 콘텐츠 요구사항이 생기면 → 먼저 컬렉션/필드를 어떻게 바꿀지 결정 → 이관 데이터·Rules 갱신 → 화면 반영
 - 화면에 "이 필드가 필요할 것 같다"는 이유만으로 임의 필드를 추가하지 않음 (실제 데이터 필요성이 확인된 뒤 추가)
 
-### 새 테이블을 추가할 때 체크리스트
+### 새 컬렉션을 추가할 때 체크리스트
 
-1. `alter table ... enable row level security;`
-2. 필요한 `create policy` (공개 읽기 / authenticated 쓰기 등)
-3. **`grant` 문 추가** — 이 프로젝트는 Supabase의 "Automatically expose new tables"를 꺼둔 상태라
-   RLS 정책만으로는 부족하고 테이블 단위 `grant select/insert/update/delete ... to anon, authenticated;`
-   를 명시적으로 추가해야 Data API가 동작함 ([[decisions#adr-006]])
-4. `src/types/database.ts` 에 대응 타입 추가
-- 사이트 코드는 데이터를 **조회(read-only)** 하는 역할만 하며, 데이터의 진짜 주인은 Supabase 테이블
+1. `firebase/firestore.rules`에 필요한 read/write 조건 추가
+2. `firebase/firestore-data.json`에 초기 문서 구조 추가
+3. `src/types/database.ts`에 대응 타입 추가
+4. 필요한 Firestore 인덱스가 있으면 Console에서 생성
+- 사이트 코드는 데이터를 **조회(read-only)** 하는 역할이며, 데이터의 원본은 Firestore 컬렉션
 
 관련 문서: [[architecture]] · [[decisions]] · [[content-operations]]
 
@@ -79,7 +77,7 @@ erDiagram
 
 `skills`, `experiences`, `contacts` 는 다른 테이블과 FK 관계 없는 독립 테이블입니다.
 
-## 테이블별 설명
+## 컬렉션별 설명
 
 ### `projects` — 프로젝트 기본 정보
 목록/카드 뷰에 노출되는 요약 정보. 현재 대상 프로젝트: **Fithub, Dartoo, 내일의 나**.
@@ -92,11 +90,8 @@ erDiagram
 | `is_featured` | 메인 화면 노출 여부 |
 | `order_index` | 노출 순서 수동 제어 |
 
-### `project_details` — ⚠️ deprecated, 사용 안 함
-프로젝트 상세 본문을 담던 테이블. 2026-09 부터 `content/projects/<slug>.md` 로 이전했고
-([[decisions#adr-010]]), 사이트는 더 이상 이 테이블을 조회하지 않는다. 왜 애초에 별도 테이블로
-분리했었는지는 [[decisions#adr-003]] 참고 (그 결정 자체는 "인라인 컬럼 vs JSONB vs 별도 테이블"
-논쟁이었고, "DB vs 파일"과는 다른 논의). 당장 drop 하지는 않은 상태.
+### `project_details` — 사용 안 함
+프로젝트 상세 본문은 `content/projects/<slug>.md`로 관리한다. 이 컬렉션은 Firestore에 만들지 않는다.
 
 ### `project_skills` — 프로젝트별 기술 스택 (1:N)
 프로젝트 하나에 여러 기술 스택을 매핑. `is_my_part` 로 "팀 프로젝트에서 본인이 직접 담당한 기술"과
@@ -132,5 +127,5 @@ FK 컬럼 없이 `org_name` 일치 여부와 날짜만으로 판단한다.
 
 - [x] `projects` / `project_details` / `project_skills` 의 실제 시드 데이터 (Fithub, Dartoo, 내일의 나) 작성
 - [x] 기존 `awards` 시드 데이터의 `project_id` 를 실제 프로젝트와 연결 (Dartoo ← 최우수상, 내일의 나 ← 우수상)
-- [ ] 이미지 업로드(프로젝트 썸네일, 아키텍처 다이어그램 등) — Supabase Storage 버킷 설계 필요 (미착수)
-- [ ] Fithub / 내일의 나 `project_details.architecture` 는 아직 텍스트 설명이 짧음 — 다이어그램 이미지는 Storage 설계 후 추가 예정
+- [ ] 이미지 업로드(프로젝트 썸네일, 아키텍처 다이어그램 등) — Firebase Storage 도입 여부·Rules 설계 필요
+- [ ] Fithub / 내일의 나 아키텍처 다이어그램 추가 — Storage 결정 후 진행

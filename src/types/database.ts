@@ -1,5 +1,5 @@
-// docs/data-model.md 및 supabase/schema.sql 과 1:1로 대응하는 타입.
-// 스키마가 바뀌면 이 파일도 함께 갱신할 것 (schema.sql이 원본).
+// docs/data-model.md 및 Firebase Firestore 컬렉션 구조와 대응하는 타입.
+// Firestore 문서 ID는 각 객체의 id로 매핑한다.
 
 export interface Project {
   id: string

@@ -1,0 +1,19 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 공개 포트폴리오에 표시하는 데이터는 누구나 읽을 수 있다.
+    match /{collectionName}/{document} {
+      allow read: if collectionName in [
+        'projects', 'project_skills', 'skills', 'awards', 'experiences'
+      ];
+      allow write: if false;
+    }
+
+    // 문의 폼 구현 전까지는 쓰기와 읽기를 모두 차단한다.
+    // 폼을 추가할 때 create 조건을 좁게 정의하고, 조회는 계속 차단한다.
+    match /contacts/{document} {
+      allow read, write: if false;
+    }
+  }
+}

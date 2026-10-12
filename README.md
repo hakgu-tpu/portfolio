@@ -4,11 +4,11 @@
 
 ## 개발 환경 준비
 
-1. `.env.local.example` 을 복사해 `.env.local` 생성 후 Supabase 프로젝트의 URL/anon key 입력
+1. `.env.local.example` 을 복사해 `.env.local` 생성 후 Firebase Web App 설정값 입력
 2. `npm install`
 3. `npm run dev`
 
 ## 스택
 
-React 19 + Vite + TypeScript + Tailwind CSS v4 + react-router-dom + Supabase (`@supabase/supabase-js`).
+React 19 + Vite + TypeScript + Tailwind CSS v4 + react-router-dom + Firebase (Cloud Firestore).
 자세한 내용은 [`docs/architecture.md`](docs/architecture.md) 참고.

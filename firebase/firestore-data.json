@@ -1,0 +1,53 @@
+{
+  "projects": [
+    { "id": "c0d49ff7-c557-4e96-8d5a-d4829dd67647", "slug": "fithub", "name": "Fithub", "description": "식단·운동 루틴을 생성하고 관리·공유하는 서비스", "role": "PM 및 인프라 환경 구축 (K8s, Envoy Gateway, GitHub Actions CI)", "team_size": 4, "start_date": "2025-12-01", "end_date": "2026-04-01", "service_url": "https://fithub.life", "github_url": "https://github.com/JAC-FitHub", "is_featured": true, "order_index": 1 },
+    { "id": "379d437a-f76b-42a3-a4c9-5fd840125585", "slug": "dartoo", "name": "Dartoo", "description": "실시간 공시정보 요약 서비스", "role": "백엔드 개발(Spring Boot) 및 인프라·운영 환경 구축 (K8s, Envoy Gateway, GitHub Actions CI), 통합 테스트 환경 구축", "team_size": 6, "start_date": "2025-07-01", "end_date": "2026-09-01", "service_url": "https://dartoo.co.kr", "github_url": "https://github.com/team-dartoo", "is_featured": true, "order_index": 2 },
+    { "id": "46917ef1-e7c3-4fe0-9c1c-6502bca0eca8", "slug": "tomorrow", "name": "내일의 나", "description": "고등학생을 대상으로 AI 기반 진로 상담과 진로 로드맵을 제공하는 서비스", "role": "백엔드 개발(Spring Boot) 및 Kubernetes 기반 인프라 환경 구축", "team_size": 4, "start_date": "2025-07-01", "end_date": "2026-04-01", "service_url": "https://tomorrow.me.kr/", "github_url": "https://github.com/team-1to3", "is_featured": true, "order_index": 3 }
+  ],
+  "project_skills": [
+    { "id": "fithub-kubernetes", "project_id": "c0d49ff7-c557-4e96-8d5a-d4829dd67647", "skill_name": "Kubernetes", "is_my_part": true },
+    { "id": "fithub-envoy", "project_id": "c0d49ff7-c557-4e96-8d5a-d4829dd67647", "skill_name": "Envoy Gateway", "is_my_part": true },
+    { "id": "fithub-actions", "project_id": "c0d49ff7-c557-4e96-8d5a-d4829dd67647", "skill_name": "GitHub Actions", "is_my_part": true },
+    { "id": "dartoo-java", "project_id": "379d437a-f76b-42a3-a4c9-5fd840125585", "skill_name": "Java", "is_my_part": true },
+    { "id": "dartoo-spring", "project_id": "379d437a-f76b-42a3-a4c9-5fd840125585", "skill_name": "Spring Boot", "is_my_part": true },
+    { "id": "dartoo-kubernetes", "project_id": "379d437a-f76b-42a3-a4c9-5fd840125585", "skill_name": "Kubernetes", "is_my_part": true },
+    { "id": "dartoo-envoy", "project_id": "379d437a-f76b-42a3-a4c9-5fd840125585", "skill_name": "Envoy Gateway", "is_my_part": true },
+    { "id": "dartoo-actions", "project_id": "379d437a-f76b-42a3-a4c9-5fd840125585", "skill_name": "GitHub Actions", "is_my_part": true },
+    { "id": "tomorrow-java", "project_id": "46917ef1-e7c3-4fe0-9c1c-6502bca0eca8", "skill_name": "Java", "is_my_part": true },
+    { "id": "tomorrow-spring", "project_id": "46917ef1-e7c3-4fe0-9c1c-6502bca0eca8", "skill_name": "Spring Boot", "is_my_part": true },
+    { "id": "tomorrow-kubernetes", "project_id": "46917ef1-e7c3-4fe0-9c1c-6502bca0eca8", "skill_name": "Kubernetes", "is_my_part": true }
+  ],
+  "skills": [
+    { "id": "java", "category": "Language", "name": "Java", "level": "main", "order_index": 1 },
+    { "id": "python", "category": "Language", "name": "Python", "level": "sub", "order_index": 2 },
+    { "id": "c", "category": "Language", "name": "C", "level": "sub", "order_index": 3 },
+    { "id": "spring-boot", "category": "Framework", "name": "Spring Boot", "level": "main", "order_index": 1 },
+    { "id": "fastapi", "category": "Framework", "name": "FastAPI", "level": "sub", "order_index": 2 },
+    { "id": "mysql", "category": "Database", "name": "MySQL", "level": "sub", "order_index": 1 },
+    { "id": "postgresql", "category": "Database", "name": "PostgreSQL", "level": "sub", "order_index": 2 },
+    { "id": "kubernetes", "category": "DevOps", "name": "Kubernetes", "level": "main", "order_index": 1 },
+    { "id": "docker", "category": "DevOps", "name": "Docker", "level": "main", "order_index": 2 },
+    { "id": "github-actions", "category": "DevOps", "name": "GitHub Actions", "level": "sub", "order_index": 3 },
+    { "id": "envoy-gateway", "category": "DevOps", "name": "Envoy Gateway", "level": "sub", "order_index": 4 },
+    { "id": "helm", "category": "DevOps", "name": "Helm", "level": "sub", "order_index": 5 },
+    { "id": "grafana", "category": "DevOps", "name": "Grafana", "level": "sub", "order_index": 6 },
+    { "id": "prometheus", "category": "DevOps", "name": "Prometheus", "level": "sub", "order_index": 7 },
+    { "id": "linux", "category": "DevOps", "name": "Linux", "level": "sub", "order_index": 8 },
+    { "id": "intellij", "category": "Tools", "name": "IntelliJ", "level": "sub", "order_index": 1 },
+    { "id": "vscode", "category": "Tools", "name": "VSCode", "level": "sub", "order_index": 2 },
+    { "id": "postman", "category": "Tools", "name": "Postman", "level": "sub", "order_index": 3 },
+    { "id": "apidog", "category": "Tools", "name": "APIdog", "level": "sub", "order_index": 4 }
+  ],
+  "awards": [
+    { "id": "patent-university", "title": "캠퍼스 특허 유니버시아드", "prize": "산업통상자원부 장관상", "organizer": "특허청·한국발명진흥회", "awarded_at": "2022-01-01", "project_id": null, "order_index": 0 },
+    { "id": "siwha", "title": "시화나래 크래커톤", "prize": "대상", "organizer": "시화나래 조력발전소", "awarded_at": "2025-01-01", "project_id": null, "order_index": 0 },
+    { "id": "dartoo-award", "title": "한양대 SW/ICT/AI 종합 학술대회", "prize": "최우수상", "organizer": "한양대학교 ERICA", "awarded_at": "2025-01-01", "project_id": "379d437a-f76b-42a3-a4c9-5fd840125585", "order_index": 0 },
+    { "id": "tomorrow-award", "title": "한양대 SW/ICT/AI 종합 학술대회", "prize": "우수상", "organizer": "한양대학교 ERICA", "awarded_at": "2025-01-01", "project_id": "46917ef1-e7c3-4fe0-9c1c-6502bca0eca8", "order_index": 0 }
+  ],
+  "experiences": [
+    { "id": "education-hy", "type": "education", "org_name": "한양대학교 ERICA", "role": "컴퓨터학부 (재학)", "description": null, "start_date": "2021-03-01", "end_date": null, "order_index": 0 },
+    { "id": "military", "type": "military", "org_name": "대한민국 육군", "role": "병장 만기 전역", "description": null, "start_date": "2023-04-10", "end_date": "2024-10-09", "order_index": 0 },
+    { "id": "jaram-member", "type": "club", "org_name": "자람 학회", "role": "회원", "description": null, "start_date": "2022-03-01", "end_date": null, "order_index": 0 },
+    { "id": "jaram-exec", "type": "club", "org_name": "자람 학회", "role": "임원진 (총무)", "description": "학회 운영 총괄 및 예산 관리, 선배 네트워킹 포럼 기획, 학술대회 진행", "start_date": "2025-05-01", "end_date": "2026-02-28", "order_index": 0 }
+  ]
+}
