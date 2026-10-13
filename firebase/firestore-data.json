@@ -46,7 +46,7 @@
   ],
   "certificates": [
     { "id": "sqld", "category": "major", "name": "SQL 개발자(SQLD)", "issuer": "한국데이터산업진흥원", "status": "취득", "certificate_number": "SQLD-061015265", "acquired_at": "2026-06-19", "valid_from": "2026-06-19", "valid_until": "2028-06-19", "order_index": 1 },
-    { "id": "information-processing-engineer", "category": "major", "name": "정보처리기사", "issuer": "한국산업인력공단", "status": "최종 합격 · 자격증 발급 예정", "certificate_number": "26202100844M", "acquired_at": "2026-09-11", "valid_from": "2026-09-11", "valid_until": null, "order_index": 2 },
+    { "id": "information-processing-engineer", "category": "major", "name": "정보처리기사", "issuer": "한국산업인력공단", "status": "취득", "certificate_number": "26202100844M", "acquired_at": "2026-09-11", "valid_from": "2026-09-11", "valid_until": null, "order_index": 2 },
     { "id": "topcit", "category": "major", "name": "TOPCIT", "issuer": "정보통신기획평가원", "status": "3수준(614)", "certificate_number": "TL2601002917", "acquired_at": "2026-05-16", "valid_from": "2026-05-16", "valid_until": "2028-05-16", "order_index": 3 },
     { "id": "opic-im1", "category": "language", "name": "OPIC(IM1)", "issuer": "ACTFL", "status": "취득", "certificate_number": "2C4452526642", "acquired_at": "2026-09-12", "valid_from": "2026-09-11", "valid_until": "2031-12-31", "order_index": 1 }
   ],
