@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import HistoryTimeline from '../components/HistoryTimeline'
 import ProjectCard from '../components/ProjectCard'
 import { getHomeData } from '../lib/data'
-import type { Award, Experience, Project, ProjectSkill, Skill } from '../types/database'
+import type { Award, Certificate, Experience, Project, ProjectSkill, Skill } from '../types/database'
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -19,6 +19,7 @@ export default function Home() {
   const [skills, setSkills] = useState<Skill[]>([])
   const [awards, setAwards] = useState<Award[]>([])
   const [experiences, setExperiences] = useState<Experience[]>([])
+  const [certificates, setCertificates] = useState<Certificate[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -31,6 +32,7 @@ export default function Home() {
          setSkills(data.skills)
          setAwards(data.awards)
          setExperiences(data.experiences)
+         setCertificates(data.certificates)
        } catch (caughtError) {
          setError(caughtError instanceof Error ? caughtError.message : '알 수 없는 오류가 발생했습니다.')
        } finally {
@@ -68,7 +70,7 @@ export default function Home() {
             [<span className="text-accent font-semibold">이상진</span>.dev]
           </div>
           <div className="flex gap-3 overflow-x-auto sm:gap-7">
-            {['history', 'projects', 'skills', 'awards', 'experiences'].map((id) => (
+            {['history', 'projects', 'skills', 'certificates', 'awards', 'experiences'].map((id) => (
               <a
                 key={id}
                 href={`#${id}`}
@@ -158,8 +160,65 @@ export default function Home() {
           )}
         </section>
 
+        <section id="certificates" className="border-border-soft border-t py-12 sm:py-18">
+          <Eyebrow>04 / CERTIFICATES</Eyebrow>
+          {certificates.length === 0 ? (
+            <p className="text-text-faint mt-4">아직 등록된 자격증이 없습니다.</p>
+          ) : (
+            <div className="mt-6 flex flex-col gap-8">
+              {[
+                ['major', '전공 관련 자격증'],
+                ['language', '어학 자격증'],
+              ].map(([category, title]) => {
+                const items = certificates.filter((certificate) => certificate.category === category)
+                if (items.length === 0) return null
+
+                return (
+                  <div key={category}>
+                    <h3 className="text-text mb-3 font-mono text-sm">{title}</h3>
+                    <div className="border-border-soft overflow-x-auto border-y">
+                      <table className="min-w-[680px] w-full text-left text-[13px]">
+                        <thead className="text-text-faint font-mono text-[11px]">
+                          <tr>
+                            <th className="py-3 pr-4 font-normal">취득·합격일</th>
+                            <th className="py-3 pr-4 font-normal">자격증</th>
+                            <th className="py-3 pr-4 font-normal">발급기관</th>
+                            <th className="py-3 pr-4 font-normal">상태</th>
+                            <th className="py-3 pr-4 font-normal">자격번호</th>
+                            <th className="py-3 font-normal">인정기간</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {items.map((certificate) => (
+                            <tr key={certificate.id} className="border-border-soft border-t">
+                              <td className="text-text-dim py-3.5 pr-4 font-mono text-xs whitespace-nowrap">
+                                {certificate.acquired_at}
+                              </td>
+                              <td className="text-text py-3.5 pr-4 font-medium whitespace-nowrap">{certificate.name}</td>
+                              <td className="text-text-dim py-3.5 pr-4 whitespace-nowrap">{certificate.issuer}</td>
+                              <td className="text-accent py-3.5 pr-4 whitespace-nowrap">{certificate.status}</td>
+                              <td className="text-text-faint py-3.5 pr-4 font-mono text-xs whitespace-nowrap">
+                                {certificate.certificate_number ?? '—'}
+                              </td>
+                              <td className="text-text-faint py-3.5 font-mono text-xs whitespace-nowrap">
+                                {certificate.valid_from
+                                  ? `${certificate.valid_from} – ${certificate.valid_until ?? '평생'}`
+                                  : '—'}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </section>
+
         <section id="awards" className="border-border-soft border-t py-12 sm:py-18">
-          <Eyebrow>04 / AWARDS</Eyebrow>
+          <Eyebrow>05 / AWARDS</Eyebrow>
           {awards.length === 0 ? (
             <p className="text-text-faint mt-4">아직 등록된 수상 내역이 없습니다.</p>
           ) : (
@@ -186,7 +245,7 @@ export default function Home() {
         </section>
 
         <section id="experiences" className="border-border-soft border-t py-12 sm:py-18">
-          <Eyebrow>05 / EXPERIENCES</Eyebrow>
+          <Eyebrow>06 / EXPERIENCES</Eyebrow>
           {experiences.length === 0 ? (
             <p className="text-text-faint mt-4">아직 등록된 활동이 없습니다.</p>
           ) : (

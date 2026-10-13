@@ -19,7 +19,7 @@ Git 저장소
   └─ content/projects/<slug>.md: 프로젝트 장문 본문 원본
 ```
 
-- **Firestore**: 프로젝트 요약, 프로젝트별 기술, 전체 기술, 수상, 이력 등 정형 데이터
+- **Firestore**: 프로젝트 요약, 프로젝트별 기술, 전체 기술, 자격증, 수상, 이력 등 정형 데이터
 - **Git Markdown**: 프로젝트 상세 장문 콘텐츠
 - **Cloudflare Pages**: Vite 산출물(`dist`) 정적 배포 및 SPA fallback
 

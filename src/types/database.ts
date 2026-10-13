@@ -48,6 +48,21 @@ export interface Award {
   created_at: string
 }
 
+export type CertificateCategory = 'major' | 'language'
+
+export interface Certificate {
+  id: string
+  category: CertificateCategory
+  name: string
+  issuer: string
+  status: string
+  certificate_number: string | null
+  acquired_at: string
+  valid_from: string | null
+  valid_until: string | null
+  order_index: number
+}
+
 export type SkillCategory = 'Language' | 'Framework' | 'Database' | 'DevOps' | 'Tools'
 export type SkillLevel = 'main' | 'sub'
 

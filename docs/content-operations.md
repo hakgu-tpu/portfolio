@@ -41,6 +41,13 @@ Firestore Database**에서 수정하는 것만으로 콘텐츠가 갱신됩니�
 - 소개 섹션에 노출되는 전체 스킬: `skills` 컬렉션 직접 수정 (`category`/`level`/`order_index` 로 정렬·강조 제어)
 - 특정 프로젝트에서 사용한 기술: 해당 프로젝트의 `project_skills` 문서 추가/삭제
 
+## 자격증 추가하기
+
+1. `certificates` 컬렉션에 문서를 추가한다.
+2. 필수 필드: `category` (`major` 또는 `language`), `name`, `issuer`, `status`, `acquired_at`, `order_index`
+3. 자격번호가 없으면 `certificate_number`를 `null`로, 평생 유효면 `valid_until`을 `null`로 둔다.
+4. 날짜는 `YYYY-MM-DD` 문자열로 입력한다.
+
 ## 활동/학회/학력/병역 이력 갱신하기 (History 타임라인)
 
 - `experiences` 컬렉션에서 직접 관리. `type` 값: `education`·`military`·`club`·`intern`·`activity`.

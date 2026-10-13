@@ -1,6 +1,6 @@
 import { collection, getDocs, query, where } from 'firebase/firestore/lite'
 import { db } from './firebase'
-import type { Award, Experience, Project, ProjectSkill, Skill } from '../types/database'
+import type { Award, Certificate, Experience, Project, ProjectSkill, Skill } from '../types/database'
 
 function documents<T>(collectionName: string) {
   return getDocs(collection(db, collectionName)).then((snapshot) =>
@@ -9,12 +9,13 @@ function documents<T>(collectionName: string) {
 }
 
 export async function getHomeData() {
-  const [allProjects, projectSkills, skills, awards, experiences] = await Promise.all([
+  const [allProjects, projectSkills, skills, awards, experiences, certificates] = await Promise.all([
     documents<Project>('projects'),
     documents<ProjectSkill>('project_skills'),
     documents<Skill>('skills'),
     documents<Award>('awards'),
     documents<Experience>('experiences'),
+    documents<Certificate>('certificates'),
   ])
 
   return {
@@ -25,6 +26,7 @@ export async function getHomeData() {
     skills: skills.sort((a, b) => a.order_index - b.order_index),
     awards: awards.sort((a, b) => b.awarded_at.localeCompare(a.awarded_at)),
     experiences: experiences.sort((a, b) => (a.start_date ?? '').localeCompare(b.start_date ?? '')),
+    certificates: certificates.sort((a, b) => a.order_index - b.order_index),
   }
 }
 

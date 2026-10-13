@@ -75,7 +75,7 @@ erDiagram
     }
 ```
 
-`skills`, `experiences`, `contacts` 는 다른 테이블과 FK 관계 없는 독립 테이블입니다.
+`skills`, `experiences`, `certificates`, `contacts` 는 다른 컬렉션과 참조 관계 없는 독립 컬렉션입니다.
 
 ## 컬렉션별 설명
 
@@ -105,6 +105,11 @@ erDiagram
 ### `skills` — 전체 기술 스택 (소개 섹션)
 `project_skills` 와는 별개로, 자기소개/스킬 섹션에 노출되는 전체 기술 목록. `category` (Language /
 Framework / Database / DevOps / Tools) 와 `level` (main / sub) 로 강조 여부를 표현.
+
+### `certificates` — 자격증
+홈의 Certificates 섹션에 노출되는 자격증 목록. `category`는 `major`(전공 관련) 또는 `language`(어학)이며,
+`acquired_at`과 인정 기간은 `YYYY-MM-DD` 문자열로 저장한다. `valid_until`이 `null`이면 평생 유효를 뜻한다.
+`order_index`는 같은 중분류 내 노출 순서를 제어한다.
 
 ### `experiences` — 이력/활동
 `type` 값: `education`(학력) · `military`(병역) · `club`(학회/동아리) · `intern`(인턴) · `activity`(기타
