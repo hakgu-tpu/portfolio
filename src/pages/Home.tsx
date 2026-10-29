@@ -65,10 +65,10 @@ export default function Home() {
   return (
     <div>
       <nav className="border-border-soft bg-bg/85 sticky top-0 z-20 border-b backdrop-blur">
-        <div className="mx-auto flex max-w-[880px] items-center justify-between gap-3 px-5 py-5 sm:px-8 sm:py-7">
-          <div className="text-text shrink-0 font-mono text-sm">
-            [<span className="text-accent font-semibold">이상진</span>.dev]
-          </div>
+        <div className="mx-auto flex max-w-[880px] items-center justify-between gap-3 px-5 py-4 sm:px-8 sm:py-5">
+          <a href="#" className="shrink-0" aria-label="idealreal.me — 맨 위로">
+            <img src="/logo.svg" alt="idealreal.me" width={630} height={308} className="h-8 w-auto sm:h-9" />
+          </a>
           <div className="flex gap-3 overflow-x-auto sm:gap-7">
             {['history', 'projects', 'skills', 'certificates', 'awards', 'experiences'].map((id) => (
               <a
