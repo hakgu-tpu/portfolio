@@ -24,7 +24,7 @@ export async function getHomeData() {
       .sort((a, b) => a.order_index - b.order_index),
     projectSkills,
     skills: skills.sort((a, b) => a.order_index - b.order_index),
-    awards: awards.sort((a, b) => b.awarded_at.localeCompare(a.awarded_at)),
+    awards: awards.sort((a, b) => a.awarded_at.localeCompare(b.awarded_at)),
     experiences: experiences.sort((a, b) => (a.start_date ?? '').localeCompare(b.start_date ?? '')),
     certificates: certificates.sort((a, b) => a.order_index - b.order_index),
   }
