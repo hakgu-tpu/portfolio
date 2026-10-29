@@ -1,8 +1,17 @@
 import { useEffect, useState } from 'react'
 import HistoryTimeline from '../components/HistoryTimeline'
+import ProfileLinks from '../components/ProfileLinks'
 import ProjectCard from '../components/ProjectCard'
-import { getHomeData } from '../lib/data'
-import type { Award, Certificate, Experience, Project, ProjectSkill, Skill } from '../types/database'
+import { getHomeData, getLinks } from '../lib/data'
+import type {
+  Award,
+  Certificate,
+  Experience,
+  ProfileLink,
+  Project,
+  ProjectSkill,
+  Skill,
+} from '../types/database'
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -20,10 +29,14 @@ export default function Home() {
   const [awards, setAwards] = useState<Award[]>([])
   const [experiences, setExperiences] = useState<Experience[]>([])
   const [certificates, setCertificates] = useState<Certificate[]>([])
+  const [links, setLinks] = useState<ProfileLink[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    // getLinks는 실패하면 빈 목록을 돌려주므로 본문 데이터 로딩과 분리해서 부른다.
+    getLinks().then(setLinks)
+
     async function load() {
        try {
          const data = await getHomeData()
@@ -103,6 +116,7 @@ export default function Home() {
               </div>
             ))}
           </div>
+          <ProfileLinks links={links} variant="hero" />
         </header>
 
         <section id="history" className="border-border-soft border-t py-12 sm:py-18">
@@ -275,7 +289,8 @@ export default function Home() {
           )}
         </section>
 
-        <footer className="py-15 pb-10">
+        <footer className="flex flex-col gap-4 py-15 pb-10">
+          <ProfileLinks links={links} variant="footer" />
           <p className="text-text-faint font-mono text-xs">
             © {new Date().getFullYear()} — Firestore 데이터로 구동되는 정적 사이트
           </p>

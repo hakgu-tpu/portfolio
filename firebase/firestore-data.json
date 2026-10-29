@@ -55,5 +55,9 @@
     { "id": "military", "type": "military", "org_name": "대한민국 육군", "role": "병장 만기 전역", "description": null, "start_date": "2023-04-10", "end_date": "2024-10-09", "order_index": 0 },
     { "id": "jaram-member", "type": "club", "org_name": "자람 학회", "role": "회원", "description": null, "start_date": "2022-03-01", "end_date": null, "order_index": 0 },
     { "id": "jaram-exec", "type": "club", "org_name": "자람 학회", "role": "임원진 (총무)", "description": "학회 운영 총괄 및 예산 관리, 선배 네트워킹 포럼 기획, 학술대회 진행", "start_date": "2025-05-01", "end_date": "2026-02-28", "order_index": 0 }
+  ],
+  "links": [
+    { "id": "github", "kind": "github", "label": "GitHub", "url": "https://github.com/hakgu-tpu", "order_index": 1 },
+    { "id": "velog", "kind": "velog", "label": "velog", "url": "https://velog.io/@ptt9965", "order_index": 2 }
   ]
 }

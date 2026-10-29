@@ -87,6 +87,19 @@ export interface Experience {
   order_index: number
 }
 
+// kind는 아이콘 선택에만 쓰인다. 모르는 값이면 기본 링크 아이콘으로 표시한다.
+export type ProfileLinkKind = 'github' | 'velog' | (string & {})
+
+// 히어로·푸터에 노출하는 외부 프로필 링크 (ADR-012).
+// react-router-dom의 Link와 이름이 겹치지 않도록 ProfileLink로 부른다.
+export interface ProfileLink {
+  id: string
+  kind: ProfileLinkKind
+  label: string
+  url: string
+  order_index: number
+}
+
 // 사이트에서 사용하는 유일한 쓰기(insert) 대상.
 export interface ContactInsert {
   name: string

@@ -75,7 +75,7 @@ erDiagram
     }
 ```
 
-`skills`, `experiences`, `certificates`, `contacts` 는 다른 컬렉션과 참조 관계 없는 독립 컬렉션입니다.
+`skills`, `experiences`, `certificates`, `links`, `contacts` 는 다른 컬렉션과 참조 관계 없는 독립 컬렉션입니다.
 
 ## 컬렉션별 설명
 
@@ -123,6 +123,20 @@ Framework / Database / DevOps / Tools) 와 `level` (main / sub) 로 강조 여�
 겹치더라도(예: 한양대학교 재학 기간과 대한민국 육군 복무 기간) 항상 별도 트랙으로 분리해서 그린다 —
 소속이 다르면 "포함 관계"가 아니라 "같은 시기에 벌어진 별개의 일"이기 때문이다. 별도의 부모-자식
 FK 컬럼 없이 `org_name` 일치 여부와 날짜만으로 판단한다.
+
+### `links` — 외부 프로필 링크
+홈 히어로(이름 소개 아래)와 모든 페이지 푸터에 노출되는 GitHub·블로그 등 개인 링크 ([[decisions#adr-012]]).
+문서 ID는 `github`, `velog`처럼 읽기 쉬운 값을 쓴다.
+
+| 필드 | 의미 |
+|---|---|
+| `kind` | 아이콘 종류 (`github`, `velog`, 그 외 값은 기본 링크 아이콘) |
+| `label` | 화면에 표시되는 이름 |
+| `url` | 링크 주소 |
+| `order_index` | 노출 순서 (작을수록 앞) |
+
+프로젝트별 저장소 링크는 이 컬렉션이 아니라 `projects.github_url`에 둔다. `links`는 사람(포트폴리오 주인)에
+대한 링크, `projects.github_url`은 프로젝트에 대한 링크다.
 
 ### `contacts` — 문의 폼 수신함
 사이트 방문자가 남기는 문의를 저장하는 인박스. `is_read` 로 확인 여부 관리. RLS 상 **누구나 insert 가능,

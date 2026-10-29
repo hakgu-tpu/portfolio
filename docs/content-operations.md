@@ -58,6 +58,14 @@ Firestore Database**에서 수정하는 것만으로 콘텐츠가 갱신됩니�
   겹쳐 그려진다(예: 자람 학회 "회원" 기간 안의 "임원진(총무)" 기간). `org_name` 이 다르면 날짜가
   겹쳐도 항상 별도 트랙으로 분리된다 ([[decisions#adr-009]]).
 
+## 외부 프로필 링크 추가/수정하기 (GitHub, 블로그 등)
+
+1. `links` 컬렉션에 문서를 추가한다. 문서 ID는 `github`, `velog`처럼 읽기 쉬운 값을 쓴다.
+2. 필수 필드: `kind`, `label`(화면에 보이는 이름), `url`, `order_index`(작을수록 앞)
+3. `kind`는 아이콘을 고르는 값이다. 현재 `github`, `velog` 아이콘이 있고, 그 밖의 값은 기본 링크 아이콘(↗)으로
+   표시된다. 새 아이콘이 필요하면 `src/components/ProfileLinks.tsx`에 추가한다.
+4. 저장하면 재배포 없이 홈 히어로와 모든 페이지 푸터에 바로 반영된다 ([[decisions#adr-012]]).
+
 ## 문의(contact) 확인하기
 
 - 문의 폼은 아직 구현되지 않았고 Firestore Rules도 `contacts` 접근을 차단한다. 폼을 추가할 때 Rules와

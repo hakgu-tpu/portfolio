@@ -1,6 +1,14 @@
 import { collection, getDocs, query, where } from 'firebase/firestore/lite'
 import { db } from './firebase'
-import type { Award, Certificate, Experience, Project, ProjectSkill, Skill } from '../types/database'
+import type {
+  Award,
+  Certificate,
+  Experience,
+  ProfileLink,
+  Project,
+  ProjectSkill,
+  Skill,
+} from '../types/database'
 
 function documents<T>(collectionName: string) {
   return getDocs(collection(db, collectionName)).then((snapshot) =>
@@ -27,6 +35,18 @@ export async function getHomeData() {
     awards: awards.sort((a, b) => a.awarded_at.localeCompare(b.awarded_at)),
     experiences: experiences.sort((a, b) => (a.start_date ?? '').localeCompare(b.start_date ?? '')),
     certificates: certificates.sort((a, b) => a.order_index - b.order_index),
+  }
+}
+
+// 링크는 부가 정보라서 조회에 실패해도(예: Rules 배포 전 permission-denied) 페이지 전체를
+// 깨뜨리지 않고 빈 목록으로 처리한다.
+export async function getLinks(): Promise<ProfileLink[]> {
+  try {
+    const links = await documents<ProfileLink>('links')
+    return links.sort((a, b) => a.order_index - b.order_index)
+  } catch (caughtError) {
+    console.warn('links 컬렉션을 불러오지 못했습니다.', caughtError)
+    return []
   }
 }
 

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Link, useParams } from 'react-router-dom'
 import remarkGfm from 'remark-gfm'
+import ProfileLinks from '../components/ProfileLinks'
 import { getProjectMarkdown } from '../lib/content'
-import { getProjectData } from '../lib/data'
-import type { Award, Project, ProjectSkill } from '../types/database'
+import { getLinks, getProjectData } from '../lib/data'
+import type { Award, ProfileLink, Project, ProjectSkill } from '../types/database'
 
 function formatDate(d: string) {
   return d.slice(2, 7).replace('-', '.')
@@ -15,8 +16,13 @@ export default function ProjectDetail() {
   const [project, setProject] = useState<Project | null>(null)
   const [skills, setSkills] = useState<ProjectSkill[]>([])
   const [award, setAward] = useState<Award | null>(null)
+  const [links, setLinks] = useState<ProfileLink[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    getLinks().then(setLinks)
+  }, [])
 
   useEffect(() => {
     if (!slug) return
@@ -201,7 +207,8 @@ export default function ProjectDetail() {
           </p>
         )}
 
-        <footer className="py-12">
+        <footer className="flex flex-col gap-4 py-12">
+          <ProfileLinks links={links} variant="footer" />
           <p className="text-text-faint font-mono text-xs">
             © {new Date().getFullYear()} — Firestore 데이터로 구동되는 정적 사이트
           </p>

@@ -5,7 +5,7 @@ service cloud.firestore {
     // 공개 포트폴리오에 표시하는 데이터는 누구나 읽을 수 있다.
     match /{collectionName}/{document} {
       allow read: if collectionName in [
-        'projects', 'project_skills', 'skills', 'awards', 'experiences', 'certificates'
+        'projects', 'project_skills', 'skills', 'awards', 'experiences', 'certificates', 'links'
       ];
       allow write: if false;
     }

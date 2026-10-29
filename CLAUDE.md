@@ -50,5 +50,7 @@ Claude Code가 이 프로젝트에서 작업할 때는 아래 문서를 먼저 �
 - ✅ 다크 테마 리디자인 + History 타임라인(날짜 기반 자동 계산, ADR-008/009) + 모바일 반응형 적용
 - ✅ 프로젝트 상세 본문을 `content/projects/<slug>.md` 로 이전 (ADR-010) —
   라우팅도 uuid 대신 `slug` 기반으로 변경, `project_details` 테이블은 deprecated
+- ✅ 로고(`public/logo.svg`)·파비콘 적용, 도메인 idealreal.me
+- ✅ GitHub·velog 링크를 Firestore `links` 컬렉션으로 추가 (ADR-012) — 홈 히어로 + 전체 푸터에 노출
 - ⏳ 미확정: 이미지 스토리지(Firebase Storage 도입 여부 — 프로젝트 썸네일/아키텍처 다이어그램에 필요),
   수상(awards) 상세 페이지(필요해지면 같은 markdown 패턴으로 확장)

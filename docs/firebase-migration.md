@@ -38,7 +38,7 @@ Supabase 저사용에 따른 리소스 제한으로, 2026-10에 사이트의 정
 
 ## 운영 원칙
 
-- `projects`, `project_skills`, `skills`, `awards`, `experiences`는 Firestore Console에서 관리한다.
+- `projects`, `project_skills`, `skills`, `awards`, `experiences`, `certificates`, `links`는 Firestore Console에서 관리한다.
 - 상세 프로젝트 본문은 계속 `content/projects/<slug>.md`가 원본이다.
 - 브라우저에서는 공개 컬렉션을 읽기만 한다. 콘텐츠 수정은 Firestore Console의 관리자 권한으로 한다.
 - `contacts` UI는 아직 없으며, 추가 전까지 Firestore Rules에서 모든 접근을 막는다.
