@@ -43,7 +43,7 @@ function LinkIcon({ kind }: { kind: string }) {
   )
 }
 
-// hero: 히어로 영역의 테두리 버튼 / footer: 푸터의 작은 텍스트 링크
+// hero: 히어로의 텍스트 링크(기술 태그와 구분되도록 테두리 없이 ↗ 표시) / footer: 푸터의 작은 텍스트 링크
 export default function ProfileLinks({
   links,
   variant,
@@ -55,16 +55,17 @@ export default function ProfileLinks({
 
   const itemClass =
     variant === 'hero'
-      ? 'border-border text-text-dim hover:text-accent hover:border-accent inline-flex items-center gap-2 rounded-[5px] border px-3.5 py-2 font-mono text-[12.5px]'
+      ? 'text-text hover:text-accent2 inline-flex items-center gap-2 py-1 font-mono text-[13px] underline decoration-border underline-offset-4 hover:decoration-current'
       : 'text-text-faint hover:text-accent inline-flex items-center gap-1.5 font-mono text-xs'
 
   return (
-    <ul className={variant === 'hero' ? 'mt-6 flex flex-wrap gap-3' : 'flex flex-wrap gap-4'}>
+    <ul className={variant === 'hero' ? 'flex flex-wrap gap-x-6 gap-y-2' : 'flex flex-wrap gap-4'}>
       {links.map((link) => (
         <li key={link.id}>
           <a href={link.url} target="_blank" rel="noreferrer" className={itemClass}>
             <LinkIcon kind={link.kind} />
             {link.label}
+            {variant === 'hero' && <span aria-hidden="true">↗</span>}
           </a>
         </li>
       ))}

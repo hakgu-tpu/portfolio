@@ -106,17 +106,28 @@ export default function Home() {
             Spring Boot로 서비스를 만들고 Kubernetes 위에서 운영하는 것까지 책임집니다. 배포
             파이프라인과 관측 환경을 함께 설계합니다.
           </p>
-          <div className="flex flex-wrap gap-2">
-            {['Java', 'Spring Boot', 'Kubernetes', 'Envoy Gateway', 'GitHub Actions'].map((t) => (
-              <div
-                key={t}
-                className="border-border text-text-dim rounded-[4px] border px-3 py-1.5 font-mono text-xs"
-              >
-                {t}
-              </div>
-            ))}
-          </div>
-          <ProfileLinks links={links} variant="hero" />
+          {/* 기술 태그(정보)와 외부 링크(이동)를 줄과 이름표로 분리한다. */}
+          <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-[72px_1fr] sm:items-baseline">
+            <dt className="text-text-faint font-mono text-[11px] tracking-wider">STACK</dt>
+            <dd className="flex flex-wrap gap-2">
+              {['Java', 'Spring Boot', 'Kubernetes', 'Envoy Gateway', 'GitHub Actions'].map((t) => (
+                <span
+                  key={t}
+                  className="border-border text-text-dim rounded-[4px] border px-3 py-1.5 font-mono text-xs"
+                >
+                  {t}
+                </span>
+              ))}
+            </dd>
+            {links.length > 0 && (
+              <>
+                <dt className="text-text-faint mt-2 font-mono text-[11px] tracking-wider sm:mt-0">FIND ME</dt>
+                <dd>
+                  <ProfileLinks links={links} variant="hero" />
+                </dd>
+              </>
+            )}
+          </dl>
         </header>
 
         <section id="history" className="border-border-soft border-t py-12 sm:py-18">
